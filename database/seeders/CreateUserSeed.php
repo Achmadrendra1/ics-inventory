@@ -22,13 +22,13 @@ class CreateUserSeed extends Seeder
             [
                 'name' => 'Admin',
                 'email' => 'admin@ics-inventory.herokuapp.com',
-                'role' => 1,
+                'role' => 'Admin',
                 'password' => $password,
             ],
             [
                 'name' => 'Staff',
                 'email' => 'staff@ics-inventory.herokuapp.com',
-                'role' => 2,
+                'role' => 'Staff',
                 'password' => $password,
             ],
            

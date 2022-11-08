@@ -27,6 +27,7 @@ Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::resource('/users', UserController::class);
+Route::post('/users/{id}', [UserController::class, 'update']);
 Route::get('/users/{id}/edit', [UserController::class, 'edit']);
 Route::get('/apiUser', [UserController::class, 'apiUsers'])->name('api.users');
 

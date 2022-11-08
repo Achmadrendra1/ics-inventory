@@ -16,6 +16,7 @@
 
         <div class="box-header">
             <a onclick="addForm()" class="btn btn-primary">Add User</a>
+            {{-- <a id="btn-add" class="btn btn-primary">Add User</a> --}}
         </div>
 
 
@@ -96,8 +97,8 @@
 
         function editForm(id) {
             save_method = 'edit';
-            $('input[name=_method]').val('PUT');
             $('#modal-form form')[0].reset();
+            $('input[name=_method]').val("PUT");
             $.ajax({
                 url: "{{ url('users') }}" + '/' + id + "/edit",
                 type: "GET",
@@ -105,11 +106,10 @@
                 success: function(data) {
                     $('#modal-form').modal('show');
                     $('.modal-title').text('Edit Users');
-
                     $('#id').val(data.id);
                     $('#name').val(data.name);
                     $('#email').val(data.email);
-                    // $('#role-edit').val(data.role);
+                    $('#roleg').val(data.role);
                 },
                 error: function() {
                     alert("Nothing Data");
@@ -126,7 +126,7 @@
                 showCancelButton: true,
                 cancelButtonColor: '#d33',
                 confirmButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Yes, Delete It!'
             }).then(function() {
                 $.ajax({
                     url: "{{ url('users') }}" + '/' + id,
@@ -165,29 +165,32 @@
         }
 
         $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-         }
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         })
-
-        $(function(){
-            $('#modal-form form').validator().on('submit', function (e) {
-                if (!e.isDefaultPrevented()){
+        
+        $(function() {
+            $('#modal-form form').validator().on('submit', function(e) {
+                if (!e.isDefaultPrevented()) {
                     var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('users') }}";
-                    else url = "{{ url('users') . '/' }}" + id;
-
-                    $.ajax({ 
-                        url : url,
-                        type : "POST",
+                    if (save_method == 'add') {
+                        url = "users";
+                    } else {
+                        url = "users/" + id;
+                    }
+                    $.ajax({
+                        url: url,
+                        type: "POST",
                         //hanya untuk input data tanpa dokumen
-//                      data : $('#modal-form form').serialize(),
+                        // data : $('#modal-form form').serialize(),
                         data: new FormData($("#modal-form form")[0]),
                         contentType: false,
                         processData: false,
-                        success : function(data) {
+                        success: function(data) {
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
+                            console.log(data)
                             swal({
                                 title: 'Success!',
                                 text: data.message,
@@ -195,7 +198,7 @@
                                 timer: '1500'
                             })
                         },
-                        error : function(data){
+                        error: function(data) {
                             swal({
                                 title: 'Oops...',
                                 text: data.message,
@@ -208,54 +211,5 @@
                 }
             });
         });
-
-//         $(function(){
-//             $('#modal-form-edit form').on('submit', function (e) {
-//                 if (!e.isDefaultPrevented()){
-//                     var id = $('#id-edit').val();
-//                      var csrf_token = $('meta[name="csrf-token"]').attr('content');
-//                     url = "{{ url('users') }}" + '/' + id;
-//                     var data = {
-//                         '_token': csrf_token,
-//                         '_method': 'PUT',
-//                         'name': $('#name-edit').val(),
-//                         'email': $('#email-edit').val(),
-                        
-//                     };
-//                     console.log(data)
-
-//                     $.ajax({ 
-//                         url : url,
-//                         type : "PUT",
-//                         //hanya untuk input data tanpa dokumen
-// //                      data : $('#modal-form form').serialize(),
-//                         // data: new FormData($("#modal-form-edit form")[0]),
-//                         data: data,
-//                         contentType: false,
-//                         processData: false,
-//                         success : function(data) {
-//                             $('#modal-form-edit').modal('hide');
-//                             table.ajax.reload();
-//                             swal({
-//                                 title: 'Success!',
-//                                 text: data.message,
-//                                 type: 'success',
-//                                 timer: '1500'
-//                             })
-//                         },
-//                         error : function(data){
-                            
-//                             swal({
-//                                 title: 'Oops...',
-//                                 text: data.message,
-//                                 type: 'error',
-//                                 timer: '1500'
-//                             })
-//                         }
-//                     });
-//                     return false;
-//                 }
-//             });
-//         });
     </script>
 @endsection

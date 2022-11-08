@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use FontLib\Table\Type\name;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -42,13 +44,20 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required',
+           
         ]);
 
-        User::create($request->all());
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+            'password' => Hash::make('admin12345')
+        ];
+        User::create($data);
 
         return response()->json([
             'success' => true,
-            'message' => 'User Created',
+            'message' => 'User Succesfully Created',
         ]);
     }
 
@@ -85,20 +94,20 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
 
-        $users = User::findOrFail($id);
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required|unique:users',
+            'email' => 'required',
         ]);
 
-        
+        $data = $request->all();
+        $users = User::findOrFail($id);
+        $users->update($data);
 
-        $users->update($request->all());
 
         return response()->json([
-                'success' => true,
-                'message' => 'users Updated',
-            ]);
+            'success' => true,
+            'message' => 'User Succesfully Updated',
+        ]);
     }
 
     /**
@@ -123,11 +132,11 @@ class UserController extends Controller
         $users = User::all();
 
         return DataTables::of($users)
-        ->addColumn('action', function ($users) {
-            return
-            '<a onclick="editForm(' . $users->id . ')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
-            '<a onclick="deleteData(' . $users->id . ')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
-        })
+            ->addColumn('action', function ($users) {
+                return
+                    '<a onclick="editForm(' . $users->id . ')"  class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
+                    '<a onclick="deleteData(' . $users->id . ')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
+            })
             ->rawColumns(['action'])->make(true);
     }
 }
