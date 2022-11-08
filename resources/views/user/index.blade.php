@@ -71,8 +71,10 @@
             serverSide: true,
             ajax: "{{ url('apiUser') }}",
             columns: [{
-                    data: 'id',
-                    name: 'id'
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'name',
@@ -169,7 +171,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         })
-        
+
         $(function() {
             $('#modal-form form').validator().on('submit', function(e) {
                 if (!e.isDefaultPrevented()) {

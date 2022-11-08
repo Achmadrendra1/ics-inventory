@@ -44,7 +44,7 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required',
-           
+
         ]);
 
         $data = [
@@ -132,6 +132,7 @@ class UserController extends Controller
         $users = User::all();
 
         return DataTables::of($users)
+        ->addIndexColumn()
             ->addColumn('action', function ($users) {
                 return
                     '<a onclick="editForm(' . $users->id . ')"  class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
