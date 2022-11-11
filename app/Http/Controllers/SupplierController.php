@@ -88,7 +88,7 @@ class SupplierController extends Controller {
 		$this->validate($request, [
 			'nama' => 'required|string|min:2',
 			'alamat' => 'required|string|min:2',
-			'email' => 'required|string|email|max:255|unique:suppliers',
+			'email' => 'required|string|email|max:255',
 			'telepon' => 'required|string|min:2',
 		]);
 
@@ -122,7 +122,7 @@ class SupplierController extends Controller {
 
 		return Datatables::of($suppliers)
 			->addColumn('action', function ($suppliers) {
-				return '<a href="#" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i> Show</a> ' .
+				return 
 				'<a onclick="editForm(' . $suppliers->id . ')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
 				'<a onclick="deleteData(' . $suppliers->id . ')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
 			})

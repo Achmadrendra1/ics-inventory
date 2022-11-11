@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="{{ URL::to('assets/bower_components/font-awesome/css/font-awesome.min.css')}} ">
     <!-- Ionicons -->
     <link rel="stylesheet" href="{{ URL::to('assets/bower_components/Ionicons/css/ionicons.min.css')}} ">
+    
+
 
     {{-- SweetAlert2 --}}
     <script src="{{ URL::to('assets/sweetalert2/sweetalert2.min.js') }}"></script>

@@ -17,20 +17,20 @@
 
                     <div class="box-body">
                         <div class="form-group">
-                            <label >Products</label>
-                            {!! Form::select('product_id', $products, null, ['class' => 'form-control select', 'placeholder' => '-- Choose Product --', 'id' => 'product_id', 'required']) !!}
+                            <label>Products</label>
+                            <select class="form-control" id="product" name="product_id"></select>
                             <span class="help-block with-errors"></span>
                         </div>
 
-                        <div class="form-group">
-                            <label >Customer</label>
-                            {!! Form::select('customer_id', $customers, null, ['class' => 'form-control select', 'placeholder' => '-- Choose Customer --', 'id' => 'customer_id', 'required']) !!}
+                         <div class="form-group">
+                            <label>Customer</label>
+                            <select class="form-control" id="customer" name="customer_id"></select>
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <div class="form-group">
                             <label >Quantity</label>
-                            <input type="text" class="form-control" id="qty" name="qty" required>
+                            <input type="number" class="form-control" id="qty" name="qty" required>
                             <span class="help-block with-errors"></span>
                         </div>
 

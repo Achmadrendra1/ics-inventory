@@ -29,18 +29,19 @@
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
-            {{-- <li class="header">Fungsi</li> --}}
+            <li class="{{ Request::is('/') ? 'active' : null }}"><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+            <li class="header"><i class="fa fa-circle-dot"></i> <span>Data Master</span></li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-            <li class="active"><a href="{{ url('users') }}"><i class="fa fa-users"></i> <span>Users</span></a></li>
-            <li class="active"><a href="{{ url('categories') }}"><i class="fa fa-list"></i> <span>Kategori</span></a></li>
-            <li class="active"><a href="{{ url('products') }}"><i class="fa fa-cubes"></i> <span>Product</span></a></li>
-            <li class="active"><a href="{{ url('customers') }}"><i class="fa fa-users"></i> <span>Customer</span></a></li>
-            <li class="active"><a href="{{ url('sales') }}"><i class="fa fa-cart-plus"></i> <span>Penjualan</span></a></li>
-            <li class="active"><a href="{{ url('suppliers') }}"><i class="fa fa-truck"></i> <span>Supplier</span></a></li>
-            <li class="active"><a href="{{ url('productsOut') }}"><i class="fa fa-minus"></i> <span>Product Keluar</span></a></li>
+            <li class="{{ Request::is('users') ? 'active' : null }}"><a href="{{ url('users') }}"><i class="fa fa-users"></i> <span>Users</span></a></li>
+            <li class="{{ Request::is('categories') ? 'active' : null }}"><a href="{{ url('categories') }}"><i class="fa fa-list"></i> <span>Kategori</span></a></li>
+            <li class="{{ Request::is('products') ? 'active' : null }}"><a href="{{ url('products') }}"><i class="fa fa-cubes"></i> <span>Product</span></a></li>
+            <li class="{{ Request::is('suppliers') ? 'active' : null }}"><a href="{{ url('suppliers') }}"><i class="fa fa-truck"></i> <span>Supplier</span></a></li>
+            <li class="{{ Request::is('customers') ? 'active' : null }}"><a href="{{ url('customers') }}"><i class="fa fa-users"></i> <span>Customer</span></a></li>
 
-            <li class="active"><a href="{{ url('productsIn') }}"><i class="fa fa-plus"></i> <span>Product Masuk</span></a></li>
+             <li class="header"><i class="fa fa-circle-dot"></i> <span>Data Transaksi</span></li>
+            <li class="{{ Request::is('sales') ? 'active' : null }}"><a href="{{ url('sales') }}"><i class="fa fa-cart-plus"></i> <span>Penjualan</span></a></li>
+            <li class="{{ Request::is('productsOut') ? 'active' : null }}"><a href="{{ url('productsOut') }}"><i class="fa fa-minus"></i> <span>Product Keluar</span></a></li>
+            <li class="{{ Request::is('productsIn') ? 'active' : null }}"><a href="{{ url('productsIn') }}"><i class="fa fa-plus"></i> <span>Product Masuk</span></a></li>
 
 
 

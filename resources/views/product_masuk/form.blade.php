@@ -1,7 +1,8 @@
 <div class="modal fade" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form  id="form-item" method="post" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data" >
+            <form id="form-item" method="post" class="form-horizontal" data-toggle="validator"
+                enctype="multipart/form-data">
                 {{ csrf_field() }} {{ method_field('POST') }}
 
                 <div class="modal-header">
@@ -17,26 +18,27 @@
 
                     <div class="box-body">
                         <div class="form-group">
-                            <label >Products</label>
-                            {!! Form::select('product_id', $products, null, ['class' => 'form-control select', 'placeholder' => '-- Choose Product --', 'id' => 'product_id', 'required']) !!}
+                            <label>Products</label>
+                            <select class="form-control" id="product" name="product_id"></select>
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <div class="form-group">
-                            <label >Supplier</label>
-                            {!! Form::select('supplier_id', $suppliers, null, ['class' => 'form-control select', 'placeholder' => '-- Choose Supplier --', 'id' => 'supplier_id', 'required']) !!}
+                            <label>Supplier</label>
+                            <select class="form-control" id="supplier" name="supplier_id"></select>
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <div class="form-group">
-                            <label >Quantity</label>
-                            <input type="text" class="form-control" id="qty" name="qty" required>
+                            <label>Quantity</label>
+                            <input type="number" class="form-control" id="qty" name="qty" required>
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <div class="form-group">
-                            <label >Date</label>
-                            <input data-date-format='yyyy-mm-dd' type="text" class="form-control" id="tanggal" name="tanggal"   required>
+                            <label>Date</label>
+                            <input data-date-format='yyyy-mm-dd' type="text" class="form-control" id="tanggal"
+                                name="tanggal" required>
                             <span class="help-block with-errors"></span>
                         </div>
 

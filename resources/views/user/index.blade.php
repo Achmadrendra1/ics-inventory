@@ -111,7 +111,7 @@
                     $('#id').val(data.id);
                     $('#name').val(data.name);
                     $('#email').val(data.email);
-                    $('#roleg').val(data.role);
+                    $('#role').val(data.role);
                 },
                 error: function() {
                     alert("Nothing Data");

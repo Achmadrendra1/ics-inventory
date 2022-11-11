@@ -97,7 +97,7 @@ class CustomerController extends Controller
         $this->validate($request, [
             'nama'      => 'required|string|min:2',
             'alamat'    => 'required|string|min:2',
-            'email'     => 'required|string|email|max:255|unique:customers',
+            'email'     => 'required|string',
             'telepon'   => 'required|string|min:2',
         ]);
 
@@ -133,7 +133,7 @@ class CustomerController extends Controller
 
         return Datatables::of($customer)
             ->addColumn('action', function($customer){
-                return '<a href="#" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i> Show</a> ' .
+                return 
                     '<a onclick="editForm('. $customer->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
                     '<a onclick="deleteData('. $customer->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
             })

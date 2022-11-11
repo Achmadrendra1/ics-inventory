@@ -4,6 +4,15 @@
 @section('top')
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css"
+        integrity="sha512-kq3FES+RuuGoBW3a9R2ELYKRywUEQv0wvPTItv3DSGqjpbNtGWVdvT8qwdKkqvPzT93jp8tSF4+oN4IeTEIlQA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.css"
+        integrity="sha512-CbQfNVBSMAYmnzP3IC+mZZmYMP2HUnVkV4+PwuhpiMUmITtSpS7Prr3fNncV1RBOnWxzz4pYQ5EAGG4ck46Oig=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endsection
 
 @section('content')
@@ -25,7 +34,7 @@
                     <th>Nama</th>
                     <th>Harga</th>
                     <th>QTY</th>
-                    <th>Image</th>
+                    <th>Satuan</th>
                     <th>Category</th>
                     <th></th>
                 </tr>
@@ -48,6 +57,7 @@
 
     {{-- Validator --}}
     <script src="{{ asset('assets/validator/validator.min.js') }}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     {{--<script>--}}
     {{--$(function () {--}}
@@ -67,13 +77,13 @@
         var table = $('#products-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('api.products') }}",
+            ajax: "{{ url('/apiProducts') }}",
             columns: [
-                {data: 'id', name: 'id'},
+                {data: 'id',name: 'id'},
                 {data: 'nama', name: 'nama'},
                 {data: 'harga', name: 'harga'},
                 {data: 'qty', name: 'qty'},
-                {data: 'show_photo', name: 'show_photo'},
+                {data: 'satuan', name: 'satuan'},
                 {data: 'category_name', name: 'category_name'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
@@ -103,6 +113,7 @@
                     $('#nama').val(data.nama);
                     $('#harga').val(data.harga);
                     $('#qty').val(data.qty);
+                    $('#satuan').val(data.satuan);
                     $('#category_id').val(data.category_id);
                 },
                 error : function() {
@@ -184,6 +195,28 @@
                     return false;
                 }
             });
+        });
+
+        $('#category').select2({
+            placeholder: '--Select Category--',
+            dropdownParent: $('#modal-form form'),
+            theme: "bootstrap",
+            ajax: {
+                url: '/ajax-select-category',
+                dataType: 'json',
+                delay: 250,
+                processResults: function(data) {
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
         });
     </script>
 

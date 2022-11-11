@@ -14,7 +14,7 @@
         </div>
 
         <div class="box-header">
-            <a onclick="addForm()" class="btn btn-primary" >Add Categories</a>
+            <a onclick="addForm()" class="btn btn-primary">Add Categories</a>
             <a href="{{ route('exportPDF.categoriesAll') }}" class="btn btn-danger">Export PDF</a>
             <a href="{{ route('exportExcel.categoriesAll') }}" class="btn btn-success">Export Excel</a>
         </div>
@@ -24,11 +24,11 @@
         <div class="box-body">
             <table id="categories-table" class="table table-striped">
                 <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Action</th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -37,11 +37,9 @@
     </div>
 
     @include('categories.form')
-
 @endsection
 
 @section('bot')
-
     <!-- DataTables -->
     <script src=" {{ asset('assets/bower_components/datatables.net/js/jquery.dataTables.min.js') }} "></script>
     <script src="{{ asset('assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }} "></script>
@@ -49,29 +47,41 @@
     {{-- Validator --}}
     <script src="{{ asset('assets/validator/validator.min.js') }}"></script>
 
-    {{--<script>--}}
-    {{--$(function () {--}}
-    {{--$('#items-table').DataTable()--}}
-    {{--$('#example2').DataTable({--}}
-    {{--'paging'      : true,--}}
-    {{--'lengthChange': false,--}}
-    {{--'searching'   : false,--}}
-    {{--'ordering'    : true,--}}
-    {{--'info'        : true,--}}
-    {{--'autoWidth'   : false--}}
-    {{--})--}}
-    {{--})--}}
-    {{--</script>--}}
+    {{-- <script> --}}
+    {{-- $(function () { --}}
+    {{-- $('#items-table').DataTable() --}}
+    {{-- $('#example2').DataTable({ --}}
+    {{-- 'paging'      : true, --}}
+    {{-- 'lengthChange': false, --}}
+    {{-- 'searching'   : false, --}}
+    {{-- 'ordering'    : true, --}}
+    {{-- 'info'        : true, --}}
+    {{-- 'autoWidth'   : false --}}
+    {{-- }) --}}
+    {{-- }) --}}
+    {{-- </script> --}}
 
     <script type="text/javascript">
         var table = $('#categories-table').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ route('api.categories') }}",
-            columns: [
-                {data: 'id', name: 'id'},
-                {data: 'name', name: 'name'},
-                {data: 'action', name: 'action', orderable: false, searchable: false}
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                }
             ]
         });
 
@@ -98,13 +108,13 @@
                     $('#id').val(data.id);
                     $('#name').val(data.name);
                 },
-                error : function() {
+                error: function() {
                     alert("Nothing Data");
                 }
             });
         }
 
-        function deleteData(id){
+        function deleteData(id) {
             var csrf_token = $('meta[name="csrf-token"]').attr('content');
             swal({
                 title: 'Are you sure?',
@@ -114,12 +124,15 @@
                 cancelButtonColor: '#d33',
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: 'Yes, delete it!'
-            }).then(function () {
+            }).then(function() {
                 $.ajax({
-                    url : "{{ url('categories') }}" + '/' + id,
-                    type : "POST",
-                    data : {'_method' : 'DELETE', '_token' : csrf_token},
-                    success : function(data) {
+                    url: "{{ url('categories') }}" + '/' + id,
+                    type: "POST",
+                    data: {
+                        '_method': 'DELETE',
+                        '_token': csrf_token
+                    },
+                    success: function(data) {
                         table.ajax.reload();
                         swal({
                             title: 'Success!',
@@ -128,7 +141,7 @@
                             timer: '1500'
                         })
                     },
-                    error : function () {
+                    error: function() {
                         swal({
                             title: 'Oops...',
                             text: data.message,
@@ -140,22 +153,22 @@
             });
         }
 
-        $(function(){
-            $('#modal-form form').validator().on('submit', function (e) {
-                if (!e.isDefaultPrevented()){
+        $(function() {
+            $('#modal-form form').validator().on('submit', function(e) {
+                if (!e.isDefaultPrevented()) {
                     var id = $('#id').val();
                     if (save_method == 'add') url = "{{ url('categories') }}";
                     else url = "{{ url('categories') . '/' }}" + id;
 
                     $.ajax({
-                        url : url,
-                        type : "POST",
+                        url: url,
+                        type: "POST",
                         //hanya untuk input data tanpa dokumen
-//                      data : $('#modal-form form').serialize(),
+                        //                      data : $('#modal-form form').serialize(),
                         data: new FormData($("#modal-form form")[0]),
                         contentType: false,
                         processData: false,
-                        success : function(data) {
+                        success: function(data) {
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
                             swal({
@@ -165,7 +178,7 @@
                                 timer: '1500'
                             })
                         },
-                        error : function(data){
+                        error: function(data) {
                             swal({
                                 title: 'Oops...',
                                 text: data.message,
@@ -179,5 +192,4 @@
             });
         });
     </script>
-
 @endsection

@@ -9,6 +9,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductKeluarController;
 use App\Http\Controllers\ProductMasukController;
+use App\Http\Controllers\Select2search;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,8 +26,14 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('/ajax-select-product', [Select2search::class, 'selectProduct']);
+Route::get('/ajax-select-supplier', [Select2search::class, 'selectSupplier']);
+Route::get('/ajax-select-customer', [Select2search::class, 'selectCustomer']);
+Route::get('/ajax-select-category', [Select2search::class, 'selectCategory']);
+
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::resource('/users', UserController::class);
+Route::resource('/users', UserController::class)->middleware('auth');
 Route::post('/users/{id}', [UserController::class, 'update']);
 Route::get('/users/{id}/edit', [UserController::class, 'edit']);
 Route::get('/apiUser', [UserController::class, 'apiUsers'])->name('api.users');

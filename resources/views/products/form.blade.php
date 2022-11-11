@@ -34,16 +34,22 @@
                             <span class="help-block with-errors"></span>
                         </div>
 
-
                         <div class="form-group">
-                            <label >Image</label>
-                            <input type="file" class="form-control" id="image" name="image" >
+                            <label >Satuan</label>
+                            <input type="text" class="form-control" id="satuan" name="satuan"   required>
                             <span class="help-block with-errors"></span>
                         </div>
 
+
+                        {{-- <div class="form-group">
+                            <label >Image</label>
+                            <input type="file" class="form-control" id="image" name="image" >
+                            <span class="help-block with-errors"></span>
+                        </div> --}}
+
                         <div class="form-group">
                             <label >Category</label>
-                            {!! Form::select('category_id', $category, null, ['class' => 'form-control select', 'placeholder' => '-- Choose Category --', 'id' => 'category_id', 'required']) !!}
+                           <select class="form-control" id="category" name="category_id"></select>
                             <span class="help-block with-errors"></span>
                         </div>
 

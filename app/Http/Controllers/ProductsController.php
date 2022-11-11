@@ -50,17 +50,17 @@ class ProductsController extends Controller
             'nama'          => 'required|string',
             'harga'         => 'required',
             'qty'           => 'required',
-            'image'         => 'required',
+            'satuan'         => 'required',
             'category_id'   => 'required',
         ]);
 
         $input = $request->all();
-        $input['image'] = null;
+        // $input['image'] = null;
 
-        if ($request->hasFile('image')) {
-            $input['image'] = '/upload/products/' . str_slug($input['nama'], '-') . '.' . $request->image->getClientOriginalExtension();
-            $request->image->move(public_path('/upload/products/'), $input['image']);
-        }
+        // if ($request->hasFile('image')) {
+        //     $input['image'] = '/upload/products/' . str_slug($input['nama'], '-') . '.' . $request->image->getClientOriginalExtension();
+        //     $request->image->move(public_path('/upload/products/'), $input['image']);
+        // }
 
         Product::create($input);
 
@@ -167,18 +167,18 @@ class ProductsController extends Controller
         return DataTables::of($product)
             ->addColumn('category_name', function ($product) {
                 return $product->category->name;
-            })
-            ->addColumn('show_photo', function ($product) {
-                if ($product->image == NULL) {
-                    return 'No Image';
-                }
-                return '<img class="rounded-square" width="50" height="50" src="' . url($product->image) . '" alt="">';
-            })
-            ->addColumn('action', function ($product) {
-                return '<a href="#" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i> Show</a> ' .
+            })->addColumn('action', function ($product) {
+                return 
                 '<a onclick="editForm(' . $product->id . ')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
                 '<a onclick="deleteData(' . $product->id . ')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
             })
-            ->rawColumns(['category_name', 'show_photo', 'action'])->make(true);
+            ->rawColumns(['category_name', 'action'])->make(true);
     }
 }
+
+// ->addColumn('show_photo', function ($product) {
+//                 if ($product->image == NULL) {
+//                     return 'No Image';
+//                 }
+//                 return '<img class="rounded-square" width="50" height="50" src="' . url($product->image) . '" alt="">';
+//             })

@@ -117,10 +117,10 @@ class CategoriesController extends Controller
     {
         $categories = Categories::all();
 
-        return DataTables::of($categories)
+        return DataTables::of($categories)->addIndexColumn()
             ->addColumn('action', function ($categories) {
-                return '<a href="#" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i> Show</a> ' .
-                '<a onclick="editForm(' . $categories->id . ')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
+                return
+                '<a onclick="editForm(' . $categories->id . ')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</> '.
                 '<a onclick="deleteData(' . $categories->id . ')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
             })
             ->rawColumns(['action'])->make(true);

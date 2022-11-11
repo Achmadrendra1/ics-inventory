@@ -156,7 +156,7 @@ class ProductMasukController extends Controller
                 return $product->supplier->nama;
             })
             ->addColumn('action', function($product){
-                return '<a href="#" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i> Show</a> ' .
+                return 
                     '<a onclick="editForm('. $product->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
                     '<a onclick="deleteData('. $product->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a> ';
 
@@ -184,4 +184,6 @@ class ProductMasukController extends Controller
     {
         return (new ExportProdukMasuk)->download('product_masuk.xlsx');
     }
+
+    
 }
