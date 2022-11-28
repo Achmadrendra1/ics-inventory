@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductKeluarController;
 use App\Http\Controllers\ProductMasukController;
 use App\Http\Controllers\Select2search;
 use Illuminate\Support\Facades\Route;
+use Yajra\DataTables\Contracts\DataTable;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ Route::get('/ajax-select-product', [Select2search::class, 'selectProduct']);
 Route::get('/ajax-select-supplier', [Select2search::class, 'selectSupplier']);
 Route::get('/ajax-select-customer', [Select2search::class, 'selectCustomer']);
 Route::get('/ajax-select-category', [Select2search::class, 'selectCategory']);
+Route::get('/test', [ProductMasukController::class, 'dataTablesTest'] );
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -71,6 +73,7 @@ Route::get('/exportProductKeluarAllExcel', [ProductKeluarController::class, 'exp
 Route::get('/exportProductKeluar/{id}', [ProductKeluarController::class, 'exportProductKeluar'])->name('exportPDF.productKeluar');
 
 Route::resource('/productsIn', ProductMasukController::class);
+Route::post('/productsIn/{id}/edit', [ProductMasukController::class, 'update']);
 Route::get('/apiProductsIn', [ProductMasukController::class, 'apiProductsIn'])->name('api.productsIn');
 Route::get('/exportProductMasukAll', [ProductMasukController::class, 'exportProductMasukAll'])->name('exportPDF.productMasukAll');
 Route::get('/exportProductMasukAllExcel', [ProductMasukController::class, 'exportExcel'])->name('exportExcel.productMasukAll');

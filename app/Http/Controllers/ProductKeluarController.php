@@ -157,8 +157,8 @@ class ProductKeluarController extends Controller
             })
             ->addColumn('action', function($product){
                 return 
-                    '<a onclick="editForm('. $product->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
-                    '<a onclick="deleteData('. $product->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
+                    '<a onclick="editForm('. $product->id .')" class="btn btn-primary btn-xs text-white"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
+                    '<a onclick="deleteData('. $product->id .')" class="btn btn-danger btn-xs text-white"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
             })
             ->rawColumns(['products_name','customer_name','action'])->make(true);
 
@@ -168,14 +168,14 @@ class ProductKeluarController extends Controller
     {
         $product_keluar = Product_Keluar::all();
         $pdf = PDF::loadView('product_keluar.productKeluarAllPDF',compact('product_keluar'));
-        return $pdf->download('product_keluar.pdf');
+        return $pdf->stream('product_keluar.pdf');
     }
 
     public function exportProductKeluar($id)
     {
         $product_keluar = Product_Keluar::findOrFail($id);
         $pdf = PDF::loadView('product_keluar.productKeluarPDF', compact('product_keluar'));
-        return $pdf->download($product_keluar->id.'_product_keluar.pdf');
+        return $pdf->stream($product_keluar->id.'_product_keluar.pdf');
     }
 
     public function exportExcel()

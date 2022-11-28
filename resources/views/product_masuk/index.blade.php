@@ -3,7 +3,8 @@
 
 @section('top')
     <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}"> --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
 
     <!-- daterange picker -->
     <link rel="stylesheet" href="{{ asset('assets/bower_components/bootstrap-daterangepicker/daterangepicker.css') }}">
@@ -22,6 +23,7 @@
 @endsection
 
 @section('content')
+
     <div class="box">
 
         <div class="box-header">
@@ -31,7 +33,7 @@
         </div>
 
         <div class="box-header">
-            <a onclick="addForm()" class="btn btn-primary">Add Products In</a>
+            <a onclick="addForm()" class="btn btn-primary text-white">Add Products In</a>
             <a href="{{ route('exportPDF.productMasukAll') }}" class="btn btn-danger">Export PDF</a>
             <a href="{{ route('exportExcel.productMasukAll') }}" class="btn btn-success">Export Excel</a>
         </div>
@@ -44,10 +46,9 @@
             <table id="products-in-table" class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Products</th>
+                        <th>No Invoice</th>
                         <th>Supplier</th>
-                        <th>QTY</th>
+                        <th>Jumlah Product</th>
                         <th>Tanggal Masuk</th>
                         <th></th>
                     </tr>
@@ -58,57 +59,16 @@
         <!-- /.box-body -->
     </div>
 
-    <div class="box col-md-6">
-
-        <div class="box-header">
-            <h3 class="box-title">Export Invoice</h3>
-        </div>
-
-        {{-- <div class="box-header"> --}}
-        {{-- <a onclick="addForm()" class="btn btn-primary" >Add Products Out</a> --}}
-        {{-- <a href="{{ route('exportPDF.productKeluarAll') }}" class="btn btn-danger">Export PDF</a> --}}
-        {{-- <a href="{{ route('exportExcel.productKeluarAll') }}" class="btn btn-success">Export Excel</a> --}}
-        {{-- </div> --}}
-
-        <!-- /.box-header -->
-        <div class="box-body">
-            <table id="invoice" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Products</th>
-                        <th>Supplier</th>
-                        <th>QTY</th>
-                        <th>Tanggal Pembelian</th>
-                        <th>Export Invoice</th>
-                    </tr>
-                </thead>
-
-                @foreach ($invoice_data as $i)
-                    <tbody>
-                        <td>{{ $i->id }}</td>
-                        <td>{{ $i->product->nama }}</td>
-                        <td>{{ $i->supplier->nama }}</td>
-                        <td>{{ $i->qty }}</td>
-                        <td>{{ $i->tanggal }}</td>
-                        <td>
-                            <a href="{{ route('exportPDF.productMasuk', ['id' => $i->id]) }}"
-                                class="btn btn-sm btn-danger">Export PDF</a>
-                        </td>
-                    </tbody>
-                @endforeach
-            </table>
-        </div>
-        <!-- /.box-body -->
-    </div>
 
     @include('product_masuk.form')
 @endsection
 
 @section('bot')
     <!-- DataTables -->
-    <script src=" {{ asset('assets/bower_components/datatables.net/js/jquery.dataTables.min.js') }} "></script>
-    <script src="{{ asset('assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }} "></script>
+    {{-- <script src=" {{ asset('assets/bower_components/datatables.net/js/jquery.dataTables.min.js') }} "></script> --}}
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+    {{-- <script src="{{ asset('assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }} "></script> --}}
 
 
     <!-- InputMask -->
@@ -153,6 +113,7 @@
                 // dateFormat: 'yyyy-mm-dd'
             })
 
+
             //Colorpicker
             $('.my-colorpicker1').colorpicker()
             //color picker with addon
@@ -162,33 +123,45 @@
             $('.timepicker').timepicker({
                 showInputs: false
             })
-        })
+        });
+
+        $(document).ready(function() {
+            $(".btn-add").click(function() {
+                var html = $(".fieldInputCopy").html();
+                $(".fieldInput").append(html);
+            });
+
+            $(".fieldInput").on("click", ".remove", function() {
+                $(this).parent().parent().remove();
+            });
+        });
     </script>
 
     <script type="text/javascript">
         var table = $('#products-in-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('api.productsIn') }}",
-            columns: [{
-                    data: 'id',
-                    name: 'id'
-                },
+            ajax: "/test",
+            columns: [
+                // {
+                //     data: 'id',
+                //     name: 'id'
+                // },
                 {
-                    data: 'products_name',
-                    name: 'products_name'
+                    data: 'no_invoice',
+                    name: 'no_invoice'
                 },
                 {
                     data: 'supplier_name',
                     name: 'supplier_name'
                 },
                 {
-                    data: 'qty',
-                    name: 'qty'
+                    data: 'jumlah_product',
+                    name: 'jumlah_product'
                 },
                 {
-                    data: 'tanggal',
-                    name: 'tanggal'
+                    data: 'tanggal_invoice',
+                    name: 'tanggal_invoice'
                 },
                 {
                     data: 'action',
@@ -207,31 +180,46 @@
             $('.modal-title').text('Add Products In');
         }
 
-        function editForm(id) {
-            save_method = 'edit';
-            $('input[name=_method]').val('PATCH');
-            $('#modal-form form')[0].reset();
-            $.ajax({
-                url: "{{ url('productsIn') }}" + '/' + id + "/edit",
-                type: "GET",
-                dataType: "JSON",
-                success: function(data) {
-                    $('#modal-form').modal('show');
-                    $('.modal-title').text('Edit Products In');
+        // function editForm(id) {
+        //     save_method = 'edit';
+        //     $('input[name=_method]').val('PATCH');
+        //     $('#modal-form form')[0].reset();
+        //     $.ajax({
+        //         url: "{{ url('productsIn') }}" + '/' + id + "/edit",
+        //         type: "GET",
+        //         dataType: "JSON",
+        //         success: function(data) {
+        //             $('#modal-form-edit').modal('show');
+        //             $('.modal-title').text('Edit Products In');
+        //             $('#invoice-edit').val(data[0].no_invoice);
+        //             $('#tanggal-edit').val(data[0].tanggal_invoice);
+        //             $('#supplier-edit').val(data[0].supplier_id);
+        //             var html = $(".fieldInputCopy").html();
+        //             $(".fieldInput").append(html);
+        //             for (var i = 0; i < data[1].length; ++i) {
+        //                 var prod_id = data[1][i].batch_no;
+        //                 console.log(prod_id);
 
-                    $('#id').val(data.id);
-                    $('#product_id').val(data.product_id);
-                    $('#supplier_id').val(data.supplier_id);
-                    $('#qty').val(data.qty);
-                    $('#tanggal').val(data.tanggal);
-                },
-                error: function() {
-                    alert("Nothing Data");
-                }
-            });
-        }
+
+
+        //                 // $('#product-edit').val(data[0][i].product_id);
+
+        //             };
+        //             // $('#product-edit').val(data[1][1].product_id);
+        //             // $.each(data[1][], function(k, v){
+        //             //     console.log('key' + k);
+        //             //     console.log('value' + v);
+        //             // });
+        //             // console.log(data[1].length);
+        //         },
+        //         error: function() {
+        //             alert("Nothing Data");
+        //         }
+        //     });
+        // }
 
         function deleteData(id) {
+            
             var csrf_token = $('meta[name="csrf-token"]').attr('content');
             swal({
                 title: 'Are you sure?',
@@ -270,72 +258,55 @@
             });
         }
 
-        $(function() {
-            $('#modal-form form').validator().on('submit', function(e) {
-                if (!e.isDefaultPrevented()) {
-                    var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('productsIn') }}";
-                    else url = "{{ url('productsIn') . '/' }}" + id;
-                    
+        // $(function() {
+        //     $('#modal-form form').validator().on('submit', function(e) {
+        //         if (!e.isDefaultPrevented()) {
+        //             var id = $('#id').val();
+        //             if (save_method == 'add') url = "{{ url('productsIn') }}";
+        //             else url = "{{ url('productsIn') . '/' }}" + id;
+        //             console.log( $('#modal-form form').serializeArray())
 
-                    $.ajax({
-                        url: url,
-                        type: "POST",
-                        //hanya untuk input data tanpa dokumen
-                        //data : $('#modal-form form').serialize(),
-                        data: new FormData($("#modal-form form")[0]),
-                        contentType: false,
-                        processData: false,
-                        success: function(data) {
-                            $('#modal-form').modal('hide');
-                            table.ajax.reload();
-                            swal({
-                                title: 'Success!',
-                                text: data.message,
-                                type: 'success',
-                                timer: '1500'
-                            })
-                        },
-                        error: function(data) {
-                            swal({
-                                title: 'Oops...',
-                                text: data.message,
-                                type: 'error',
-                                timer: '1500'
-                            })
-                        }
-                    });
-                    return false;
-                }
-            });
-        });
 
-        $('#product').select2({
-            placeholder: '--Select Product--',
-            dropdownParent: $('#modal-form form'),
-            theme: "bootstrap",
-            ajax: {
-                url: '/ajax-select-product',
-                dataType: 'json',
-                delay: 250,
-                processResults: function(data) {
-                    return {
-                        results: $.map(data, function(item) {
-                            return {
-                                text: item.nama,
-                                id: item.id
-                            }
-                        })
-                    };
-                },
-                cache: true
-            }
-        });
+        //             $.ajax({
+        //                 url: url,
+        //                 type: "POST",
+        //                 //hanya untuk input data tanpa dokumen
+        //                 data : $('#modal-form form').serializeArray(),
+        //                 // data: new FormData($("#modal-form form")[0]),
+        //                 contentType: false,
+        //                 processData: false,
+        //                 success: function(data) {
+        //                     $('#modal-form').modal('hide');
+        //                     table.ajax.reload();
+        //                     swal({
+        //                         title: 'Success!',
+        //                         text: data.message,
+        //                         type: 'success',
+        //                         timer: '1500'
+        //                     })
+        //                 },
+        //                 error: function(data) {
+        //                     swal({
+        //                         title: 'Oops...',
+        //                         text: data.message,
+        //                         type: 'error',
+        //                         timer: '1500'
+        //                     })
+        //                 }
+        //             });
+        //             return false;
+        //         }
+        //     });
+        // });
+
+
+
 
         $('#supplier').select2({
             placeholder: '--Select Supplier--',
             dropdownParent: $('#modal-form form'),
             theme: "bootstrap",
+
             ajax: {
                 url: '/ajax-select-supplier',
                 dataType: 'json',

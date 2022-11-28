@@ -169,8 +169,8 @@ class ProductsController extends Controller
                 return $product->category->name;
             })->addColumn('action', function ($product) {
                 return 
-                '<a onclick="editForm(' . $product->id . ')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
-                '<a onclick="deleteData(' . $product->id . ')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
+                '<a onclick="editForm(' . $product->id . ')" class="btn btn-primary btn-xs text-white"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
+                '<a onclick="deleteData(' . $product->id . ')" class="btn btn-danger btn-xs text-white"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
             })
             ->rawColumns(['category_name', 'action'])->make(true);
     }
