@@ -40,7 +40,7 @@
         <!-- /.box-body -->
     </div>
 
-    @include('suppliers.form_import')
+    {{-- @include('suppliers.form_import') --}}
 
     @include('suppliers.form')
 

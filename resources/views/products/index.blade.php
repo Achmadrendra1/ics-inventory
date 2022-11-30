@@ -64,20 +64,6 @@
     <script src="{{ asset('assets/validator/validator.min.js') }}"></script>
       <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    {{--<script>--}}
-    {{--$(function () {--}}
-    {{--$('#items-table').DataTable()--}}
-    {{--$('#example2').DataTable({--}}
-    {{--'paging'      : true,--}}
-    {{--'lengthChange': false,--}}
-    {{--'searching'   : false,--}}
-    {{--'ordering'    : true,--}}
-    {{--'info'        : true,--}}
-    {{--'autoWidth'   : false--}}
-    {{--})--}}
-    {{--})--}}
-    {{--</script>--}}
-
     <script type="text/javascript">
         var table = $('#products-table').DataTable({
             processing: true,
@@ -119,7 +105,7 @@
                     $('#harga').val(data.harga);
                     $('#qty').val(data.qty);
                     $('#satuan').val(data.satuan);
-                    $('#category_id').val(data.category_id);
+                    $('#category').val(data.category_id);
                 },
                 error : function() {
                     alert("Nothing Data");
@@ -200,28 +186,6 @@
                     return false;
                 }
             });
-        });
-
-        $('#category').select2({
-            placeholder: '--Select Category--',
-            dropdownParent: $('#modal-form form'),
-            theme: "bootstrap",
-            ajax: {
-                url: '/ajax-select-category',
-                dataType: 'json',
-                delay: 250,
-                processResults: function(data) {
-                    return {
-                        results: $.map(data, function(item) {
-                            return {
-                                text: item.name,
-                                id: item.id
-                            }
-                        })
-                    };
-                },
-                cache: true
-            }
         });
     </script>
 

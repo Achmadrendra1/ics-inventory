@@ -17,8 +17,7 @@ class ProductsController extends Controller
     public function index()
     {
         $category = Categories::orderBy('name', 'ASC')
-        ->get()
-            ->pluck('name', 'id');
+        ->get();
 
         $producs = Product::all();
         return view('products.index', compact('category'));

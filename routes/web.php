@@ -74,6 +74,7 @@ Route::get('/exportProductKeluar/{id}', [ProductKeluarController::class, 'export
 
 Route::resource('/productsIn', ProductMasukController::class);
 Route::post('/productsIn/{id}/edit', [ProductMasukController::class, 'update']);
+Route::get('/productsIn/{id}/print', [ProductMasukController::class, 'print']);
 Route::get('/apiProductsIn', [ProductMasukController::class, 'apiProductsIn'])->name('api.productsIn');
 Route::get('/exportProductMasukAll', [ProductMasukController::class, 'exportProductMasukAll'])->name('exportPDF.productMasukAll');
 Route::get('/exportProductMasukAllExcel', [ProductMasukController::class, 'exportExcel'])->name('exportExcel.productMasukAll');

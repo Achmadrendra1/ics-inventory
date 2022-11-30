@@ -74,8 +74,9 @@
                         Product</a>
 
                     @foreach ($detail as $d)
-                        {{-- {{ dd($loop->count) }} --}}
+                        
                         <div class="form-group fieldInput{{ $loop->index }}">
+                            {{-- {{ $loop->last }} --}}
                             <div class="row align-items-center ">
                                 <div class="col">
                                     <div class="form-group">

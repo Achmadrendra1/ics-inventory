@@ -75,8 +75,7 @@ class ProductMasukController extends Controller
         $batch = $request->batch;
         $qty = $request->qty;
 
-        for ($i = 0; $i < count($product); $i++)
-        {
+        for ($i = 0; $i < count($product); $i++) {
             $stok = Product::find($product[$i]);
             $stok->qty += $qty[$i];
             $stok->update();
@@ -92,7 +91,6 @@ class ProductMasukController extends Controller
 
         Alert::success('Success', 'Products In Saved');
         return \redirect('productsIn');
-
     }
 
     /**
@@ -156,46 +154,39 @@ class ProductMasukController extends Controller
         $batch = $request->batch;
         $qty = $request->qty;
 
-        for ($i = 0; $i < count($product); $i++)
-        {
-            // $stok = Product::find($product[$i]);
-            // $stok->qty += $qty[$i];
-            // $stok->update();
+        for ($i = 0; $i < count($product); $i++) {
+            $cekQty = invoice_detail::where('no_invoice', $request->invoice)->where('product_id', $product[$i])->first();
+            if (empty($cekQty->qty)) {
+                $stok = Product::find($product[$i]);
+                $stok->qty += $qty[$i];
+                $stok->update();
 
-            $detail = new invoice_detail();
-            $detail->no_invoice = $getNoinv->no_invoice;
-            $detail->product_id = $product[$i];
-            $detail->exp_date = $exp[$i];
-            $detail->batch_no = $batch[$i];
-            $detail->qty = $qty[$i];
-            $detail->update();
-            
+                $detail = new invoice_detail();
+                $detail->no_invoice = $getNoinv->no_invoice;
+                $detail->product_id = $product[$i];
+                $detail->exp_date = $exp[$i];
+                $detail->batch_no = $batch[$i];
+                $detail->qty = $qty[$i];
+                $detail->save();
+            }
+            if ($cekQty->qty != $qty[$i]) {
+                $stok = Product::find($product[$i]);
+                $stok->qty = $stok->qty - $cekQty->qty + $qty[$i];
+                $stok->update();
+
+                invoice_detail::where('no_invoice', $request->invoice)->where('product_id', $product[$i])->update([
+                    'no_invoice' => $getNoinv->no_invoice,
+                    'product_id' => $product[$i],
+                    'exp_date' => $exp[$i],
+                    'batch_no' => $batch[$i],
+                    'qty' => $qty[$i]
+                ]);
+            }
         }
 
         Alert::success('Success', 'Products In Updated');
         return \redirect('productsIn');
 
-        // Alert::success('Success', 'Products In Saved');
-        // return \redirect('productsIn');
-        // $this->validate($request, [
-        //     'product_id'     => 'required',
-        //     'supplier_id'    => 'required',
-        //     'qty'            => 'required',
-        //     'tanggal'        => 'required'
-        // ]);
-
-        // $product_masuk = Product_Masuk::findOrFail($id);
-        // $product_masuk->update($request->all());
-
-        // $product = Product::findOrFail($request->product_id);
-        // $product->qty += $request->qty;
-        // $product->update();
-
-        // return response()->json([
-        //     'success'    => true,
-        //     'message'    => 'Product In Updated'
-        // ]);
-        // return dd($request->all());
     }
 
     /**
@@ -207,7 +198,7 @@ class ProductMasukController extends Controller
     public function destroy($id)
     {
         $invoice = invoice::findOrfail($id);
-        
+
         $detail = invoice_detail::where('no_invoice', $invoice->no_invoice);
 
         $detail->delete();
@@ -236,6 +227,7 @@ class ProductMasukController extends Controller
             })
             ->addColumn('action', function ($invoice) {
                 return
+                    '<a href="productsIn/' . $invoice->id . '/print" class="btn btn-success btn-xs text-white"><i class="glyphicon glyphicon-edit"></i> Print</a> ' .
                     '<a href="productsIn/' . $invoice->id . '/edit" class="btn btn-primary btn-xs text-white"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
                     '<a onclick="deleteData(' . $invoice->id . ')" class="btn btn-danger btn-xs text-white"><i class="glyphicon glyphicon-trash"></i> Delete</a> ';
             })
@@ -280,5 +272,14 @@ class ProductMasukController extends Controller
     public function exportExcel()
     {
         return (new ExportProdukMasuk)->download('product_masuk.xlsx');
+    }
+
+    public function print($id){
+        $invoice = invoice::findOrFail($id);
+        $detail = invoice_detail::where('no_invoice', $invoice->no_invoice)->get();
+        return \view('report.reportInvoiceIn', [
+            'invoice' => $invoice,
+            'detail' => $detail
+        ]);
     }
 }

@@ -1,7 +1,8 @@
 <div class="modal fade" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form  id="form-item" method="post" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data" >
+            <form id="form-item" method="post" class="form-horizontal" data-toggle="validator"
+                enctype="multipart/form-data">
                 {{ csrf_field() }} {{ method_field('POST') }}
 
                 <div class="modal-header">
@@ -17,43 +18,41 @@
 
                     <div class="box-body">
                         <div class="form-group">
-                            <label >Name</label>
-                            <input type="text" class="form-control" id="nama" name="nama"  autofocus required>
+                            <label>Name</label>
+                            <input type="text" class="form-control" id="nama" name="nama" autofocus required>
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <div class="form-group">
-                            <label >Price</label>
-                            <input type="text" class="form-control" id="harga" name="harga"   required>
+                            <label>Price</label>
+                            <input type="text" class="form-control" id="harga" name="harga" required>
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <div class="form-group">
-                            <label >Quantity</label>
-                            <input type="text" class="form-control" id="qty" name="qty"   required>
+                            <label>Quantity</label>
+                            <input type="text" class="form-control" id="qty" name="qty" required>
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <div class="form-group">
-                            <label >Satuan</label>
-                            <input type="text" class="form-control" id="satuan" name="satuan"   required>
+                            <label>Satuan</label>
+                            <input type="text" class="form-control" id="satuan" name="satuan" required>
                             <span class="help-block with-errors"></span>
                         </div>
-
-
-                        {{-- <div class="form-group">
-                            <label >Image</label>
-                            <input type="file" class="form-control" id="image" name="image" >
-                            <span class="help-block with-errors"></span>
-                        </div> --}}
 
                         <div class="form-group">
-                            <label >Category</label>
-                           <select class="form-control" id="category" name="category_id"></select>
+                            <label>Category</label>
+                            <select class="form-control" id="category" name="category_id">
+                                <option>--Choose Product--</option>
+                                @foreach ($category as $p)
+                                    <option value={{ $p->id }} >
+                                        {{ $p->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                             <span class="help-block with-errors"></span>
                         </div>
-
-
 
 
                     </div>
