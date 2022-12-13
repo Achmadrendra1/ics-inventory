@@ -74,9 +74,9 @@
                         Product</a>
 
                     @foreach ($detail as $d)
-                        
+                        {{-- {{  }} --}}
                         <div class="form-group fieldInput{{ $loop->index }}">
-                            {{-- {{ $loop->last }} --}}
+                            {{-- {{ $loop->index }} --}}
                             <div class="row align-items-center ">
                                 <div class="col">
                                     <div class="form-group">
@@ -123,6 +123,7 @@
                                 </div>
                             </div>
                         </div>
+                  
                     @endforeach
 
                 </div>
@@ -227,15 +228,11 @@
         $(document).ready(function() {
             $(".btn-add").click(function() {
                 var html = $(".fieldInputCopy").html();
-                @foreach ($detail as $d)
-                    @if ($loop->count > 1)
-                    $(".fieldInput{{ $loop->last}}").append(html);
-                    @else
-                    $(".fieldInput{{ $loop->index}}").append(html);
-                    @endif
-                @endforeach
-
+                var array = {!! json_encode($detail) !!};
+                var lastIndex = array.length - 1;
+                $(".fieldInput" + lastIndex).append(html);
             });
+
             @foreach ($detail as $d)
                 $(".fieldInput{{ $loop->index }}").on("click", ".remove", function() {
                     $(this).parent().parent().remove();

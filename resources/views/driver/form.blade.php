@@ -24,34 +24,41 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Price</label>
-                            <input type="text" class="form-control" id="harga" name="price" required>
+                            <label>Address</label>
+                            <input type="text" class="form-control" id="alamat" name="address" required>
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <div class="form-group">
-                            <label>Quantity</label>
-                            <input type="text" class="form-control" id="qty" name="qty" required>
+                            <label>Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <div class="form-group">
-                            <label>Satuan</label>
-                            <input type="text" class="form-control" id="satuan" name="item_unit" required>
+                            <label>Phone</label>
+                            <input type="text" class="form-control" id="telepon" name="phone" required>
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <div class="form-group">
-                            <label>Category</label>
-                            <select class="form-control" id="category" name="category_id">
-                                <option>--Choose Product--</option>
-                                @foreach ($category as $p)
-                                    <option value={{ $p->id }} >
-                                        {{ $p->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <span class="help-block with-errors"></span>
+                            <label for="formFile" class="form-label">Upload Photo Driving License</label>
+                            <input class="form-control" type="file" id="sim" name="driving_license"
+                                onchange="loadSim(event)">
+                            </br>
+                            <div class="text-center">
+                                <img id="out_sim" width="200px" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formFile" class="form-label">Upload Photo</label>
+                            <input class="form-control" type="file" id="photo" name="photo"
+                                onchange="loadPhoto(event)">
+                            </br>
+                            <div class="text-center">
+                                <img id="out_photo" width="200px" />
+                            </div>
                         </div>
 
 

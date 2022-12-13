@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ExportCategories;
-use App\Models\Categories;
+use App\Models\car;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
-use PDF;
 
-class CategoriesController extends Controller
+class CarController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +15,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Categories::all();
-        return view('categories.index');
+        return view('car.index');
     }
 
     /**
@@ -40,24 +37,25 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'   => 'required|string|min:2'
+            'brand'   => 'required|string|min:2',
+            'license_plate'   => 'required|string|min:2'
         ]);
 
-        Categories::create($request->all());
+        car::create($request->all());
 
         return response()->json([
             'success'    => true,
-            'message'    => 'Categories Created'
+            'message'    => 'Car Saved'
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\car  $car
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(car $car)
     {
         //
     }
@@ -65,76 +63,65 @@ class CategoriesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\car  $car
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $category = Categories::find($id);
-        return $category;
+        $car = car::find($id);
+        return $car;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\car  $car
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name'   => 'required|string|min:2'
+            'brand'   => 'required|string|min:2',
+            'license_plate'   => 'required|string|min:2'
         ]);
 
-        $category = Categories::findOrFail($id);
+        $car = car::findOrFail($id);
 
-        $category->update($request->all());
+        $car->update($request->all());
 
         return response()->json([
             'success'    => true,
-            'message'    => 'Categories Update'
+            'message'    => 'Car Updated'
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\car  $car
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        Categories::destroy($id);
+        Car::destroy($id);
 
         return response()->json([
             'success'    => true,
-            'message'    => 'Categories Delete'
+            'message'    => 'Car Deleted'
         ]);
     }
 
-    public function apiCategories()
+    public function apiCar()
     {
-        $categories = Categories::all();
+        $car = car::all();
 
-        return DataTables::of($categories)->addIndexColumn()
-            ->addColumn('action', function ($categories) {
+        return DataTables::of($car)->addIndexColumn()
+            ->addColumn('action', function ($car) {
                 return
-                '<a onclick="editForm(' . $categories->id . ')" class="btn btn-primary btn-xs text-white"><i class="glyphicon glyphicon-edit"></i> Edit </> '.
-                '<a onclick="deleteData(' . $categories->id . ')" class="btn btn-danger btn-xs text-white"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
+                    '<a onclick="editForm(' . $car->id . ')" class="btn btn-primary btn-xs text-white"><i class="glyphicon glyphicon-edit"></i> Edit</> ' .
+                    '<a onclick="deleteData(' . $car->id . ')" class="btn btn-danger btn-xs text-white"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
             })
             ->rawColumns(['action'])->make(true);
-    }
-
-    public function exportCategoriesAll()
-    {
-        $categories = Categories::all();
-        $pdf = PDF::loadView('categories.CategoriesAllPDF', compact('categories'));
-        return $pdf->download('categories.pdf');
-    }
-
-    public function exportExcel()
-    {
-        return (new ExportCategories())->download('categories.xlsx');
     }
 }

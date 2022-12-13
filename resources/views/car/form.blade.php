@@ -17,30 +17,16 @@
 
                     <div class="box-body">
                         <div class="form-group">
-                            <label >Name</label>
-                            <input type="text" class="form-control" id="nama" name="name"  autofocus required>
+                            <label >Brand</label>
+                            <input type="text" class="form-control" id="brand" name="brand"  autofocus required>
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <div class="form-group">
-                            <label >Address</label>
-                            <input type="text" class="form-control" id="alamat" name="address"   required>
+                            <label >License Plate</label>
+                            <input type="text" class="form-control" id="plate" name="license_plate"  autofocus required>
                             <span class="help-block with-errors"></span>
                         </div>
-
-                        <div class="form-group">
-                            <label >Email</label>
-                            <input type="email" class="form-control" id="email" name="email"   required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label >Phone</label>
-                            <input type="text" class="form-control" id="telepon" name="phone"   required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-
-
                     </div>
                     <!-- /.box-body -->
 

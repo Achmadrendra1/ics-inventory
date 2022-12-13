@@ -10,7 +10,15 @@ class invoice extends Model
     use HasFactory;
     protected $table = 'invoices';
 
-    protected $fillable = ['no_invoice', 'tanggal_invoice', 'supplier_id', 'customer_id', 'status'];
+    protected $fillable = [
+        'no_invoice', 
+        'user_id',
+        'supplier_id', 
+        'customer_id', 
+        'status',
+        'date',
+        'type'
+    ];
 
     protected $hidden = ['created_at', 'updated_at'];
 

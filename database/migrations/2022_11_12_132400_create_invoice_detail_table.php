@@ -15,12 +15,15 @@ return new class extends Migration
     {
         Schema::create('invoice_detail', function (Blueprint $table) {
             $table->string("no_invoice");
-            $table->integer("product_id");
+            $table->integer("product_id")->unsigned();
             $table->date("exp_date");
             $table->integer("batch_no");
             $table->integer("qty");
-
             $table->timestamps();
+
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+
+
         });
     }
 

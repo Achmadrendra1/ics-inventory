@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductMasukTable extends Migration
+class CreateProductInTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateProductMasukTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_masuk', function (Blueprint $table) {
+        Schema::create('product_in', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('product_id')->unsigned();
+            $table->integer("product_id")->unsigned();
             $table->integer('supplier_id')->unsigned();
             $table->integer('qty');
-            $table->date('tanggal');
+            $table->date('date');
             $table->timestamps();
 
             // $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
@@ -33,6 +33,6 @@ class CreateProductMasukTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_keluar');
+        Schema::dropIfExists('product_in');
     }
 }

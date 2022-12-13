@@ -72,7 +72,7 @@
         <!-- small box -->
         <div class="small-box bg-navy">
             <div class="inner">
-                <h3>{{ \App\Models\Sale::count() }}</h3>
+                <h3>{{ \App\Models\Driver::count() }}</h3>
                 <p>Sales</p>
             </div>
             <div class="icon">

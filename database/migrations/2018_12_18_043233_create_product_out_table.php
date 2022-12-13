@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductKeluarTable extends Migration
+class CreateProductOutTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateProductKeluarTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_keluar', function (Blueprint $table) {
+        Schema::create('product_out', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id')->unsigned();
             $table->integer('customer_id')->unsigned();
             $table->integer('qty');
-            $table->date('tanggal');
+            $table->date('date');
             $table->timestamps();
 
             // $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
@@ -33,6 +33,6 @@ class CreateProductKeluarTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_keluar');
+        Schema::dropIfExists('product_out');
     }
 }

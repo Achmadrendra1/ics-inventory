@@ -15,7 +15,7 @@
         </div>
 
         <div class="box-header">
-            <a onclick="addForm()" class="btn btn-primary text-white" >Add Customers</a>
+            <a onclick="addForm()" class="btn btn-primary text-white" >Add Suppliers</a>
             <a href="{{ route('exportPDF.suppliersAll') }}" class="btn btn-danger">Export PDF</a>
             <a href="{{ route('exportExcel.suppliersAll') }}" class="btn btn-success">Export Excel</a>
         </div>
@@ -26,7 +26,7 @@
             <table id="sales-table" class="table table-striped">
                 <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Id</th>
                     <th>Name</th>
                     <th>Address</th>
                     <th>Email</th>
@@ -77,10 +77,10 @@
             ajax: "{{ route('api.suppliers') }}",
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'nama', name: 'nama'},
-                {data: 'alamat', name: 'alamat'},
+                {data: 'name', name: 'nama'},
+                {data: 'address', name: 'alamat'},
                 {data: 'email', name: 'email'},
-                {data: 'telepon', name: 'telepon'},
+                {data: 'phone', name: 'telepon'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
@@ -106,10 +106,10 @@
                     $('.modal-title').text('Edit Suppliers');
 
                     $('#id').val(data.id);
-                    $('#nama').val(data.nama);
-                    $('#alamat').val(data.alamat);
+                    $('#nama').val(data.name);
+                    $('#alamat').val(data.address);
                     $('#email').val(data.email);
-                    $('#telepon').val(data.telepon);
+                    $('#telepon').val(data.phone);
                 },
                 error : function() {
                     alert("Nothing Data");

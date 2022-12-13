@@ -26,7 +26,7 @@
     <tbody>
         @foreach ($detail as $d)
             <tr>
-                <td>{{ $loop->iteration }}</td>
+                {{-- <td>{{ $loop->iteration }}</td> --}}
                 <td>{{ $d->product->nama }}</td>
                 <td>{{ $d->qty }}</td>
                 <td>{{ $d->exp_date }}</td>

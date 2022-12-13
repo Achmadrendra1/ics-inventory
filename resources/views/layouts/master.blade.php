@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Sistem Inventory</title>
+     <!-- ICONS -->
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ URL::to('assets/img/apple-icon.png')}}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ URL::to('assets/img/favicon.png')}}">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     {{-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> --}}
@@ -29,15 +32,14 @@
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
           page. However, you can choose any other skin. Make sure you
           apply the skin class to the body tag so the changes take effect. -->
-    <link rel="stylesheet" href="{{ URL::to('assets/dist/css/skins/skin-green.min.css') }} ">
-
+    <link rel="stylesheet" href={{ Auth::user()->role == "Staff" ? "assets/dist/css/skins/skin-green.min.css" : "assets/dist/css/skins/skin-blue.min.css" }}
     @yield('top')
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
-<body class="hold-transition skin-green sidebar-mini">
+<body class="hold-transition {{ Auth::user()->role == "Staff" ? "skin-green" : "skin-blue" }}  sidebar-mini">
     <div class="wrapper">
 
         <!-- Main Header -->
@@ -110,7 +112,11 @@
             </nav>
         </header>
         <!-- Left side column. contains the logo and sidebar -->
+        @if(Auth::user()->role == "Admin")
         @include('layouts.sidebar')
+        @else
+        @include('layouts.sidebar_staff')
+        @endif
         @include('sweetalert::alert')
 
         <div class="content-wrapper">

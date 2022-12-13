@@ -30,15 +30,15 @@
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="{{ Request::is('/') ? 'active' : null }}"><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-            <li class="header"><i class="fa fa-circle-dot"></i> <span>Data Master</span></li>
+            {{-- <li class="header"><i class="fa fa-circle-dot"></i> <span>Data Master</span></li>
             <!-- Optionally, you can add icons to the links -->
             <li class="{{ Request::is('users') ? 'active' : null }}"><a href="{{ url('users') }}"><i class="fa fa-users"></i> <span>Users</span></a></li>
             <li class="{{ Request::is('categories') ? 'active' : null }}"><a href="{{ url('categories') }}"><i class="fa fa-list"></i> <span>Category</span></a></li>
             <li class="{{ Request::is('products') ? 'active' : null }}"><a href="{{ url('products') }}"><i class="fa fa-cubes"></i> <span>Products</span></a></li>
             <li class="{{ Request::is('suppliers') ? 'active' : null }}"><a href="{{ url('suppliers') }}"><i class="fa fa-truck"></i> <span>Suppliers</span></a></li>
             <li class="{{ Request::is('customers') ? 'active' : null }}"><a href="{{ url('customers') }}"><i class="fa fa-users"></i> <span>Customers</span></a></li>
-            <li class="{{ Request::is('drivers') ? 'active' : null }}"><a href="{{ url('drivers') }}"><i class="fa fa-user"></i> <span>Drivers</span></a></li>
-            <li class="{{ Request::is('cars') ? 'active' : null }}"><a href="{{ url('cars') }}"><i class="fa fa-car"></i> <span>Cars</span></a></li>
+            <li class="{{ Request::is('customers') ? 'active' : null }}"><a href="{{ url('drivers') }}"><i class="fa fa-user"></i> <span>Drivers</span></a></li>
+            <li class="{{ Request::is('customers') ? 'active' : null }}"><a href="{{ url('vehicles') }}"><i class="fa fa-car"></i> <span>Cars</span></a></li> --}}
 
              <li class="header"><i class="fa fa-circle-dot"></i> <span>Data Transaksi</span></li>
              <li class="{{ Request::is('productsIn') ? 'active' : null }}"><a href="{{ url('productsIn') }}"><i class="fa fa-plus"></i> <span>Product In</span></a></li>

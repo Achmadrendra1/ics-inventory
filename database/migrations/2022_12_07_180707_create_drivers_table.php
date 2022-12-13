@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('invoices', function (Blueprint $table) {
+        Schema::create('drivers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string("no_invoice");
-            $table->integer("user_id")->unsigned();
-            $table->integer("supplier_id")->unsigned()->nullable();
-            $table->integer("customer_id")->unsigned()->nullable();
-            $table->date("date");
-            $table->string("type");
+            $table->string('name');
+            $table->text('address');
+            $table->string('email');
+            $table->string('phone');
+            $table->string('driving_license');
+            $table->string('photo');
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invoices');
+        Schema::dropIfExists('drivers');
     }
 };

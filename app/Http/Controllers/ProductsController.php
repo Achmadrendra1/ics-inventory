@@ -46,10 +46,10 @@ class ProductsController extends Controller
             ->pluck('name', 'id');
 
         $this->validate($request, [
-            'nama'          => 'required|string',
-            'harga'         => 'required',
+            'name'          => 'required|string',
+            'price'         => 'required',
             'qty'           => 'required',
-            'satuan'         => 'required',
+            'item_unit'     => 'required',
             'category_id'   => 'required',
         ]);
 
@@ -109,10 +109,9 @@ class ProductsController extends Controller
             ->pluck('name', 'id');
 
         $this->validate($request, [
-            'nama'          => 'required|string',
-            'harga'         => 'required',
+            'name'          => 'required|string',
+            'price'         => 'required',
             'qty'           => 'required',
-            //            'image'         => 'required',
             'category_id'   => 'required',
         ]);
 

@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\CarController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductKeluarController;
@@ -65,6 +67,12 @@ Route::get('/apiSuppliers', [SupplierController::class, 'apiSuppliers'])->name('
 Route::post('/importSuppliers', [SupplierController::class, 'ImportExcel'])->name('import.suppliers');
 Route::get('/exportSupplierssAll', [SupplierController::class, 'exportSuppliersAll'])->name('exportPDF.suppliersAll');
 Route::get('/exportSuppliersAllExcel', [SupplierController::class, 'exportExcel'])->name('exportExcel.suppliersAll');
+
+Route::resource('/cars', CarController::class);
+Route::get('/apiCar', [CarController::class, 'apiCar'])->name('api.car');
+
+Route::resource('/drivers', DriverController::class);
+Route::get('/apiDriver', [DriverController::class, 'apiDriver'])->name('api.driver');
 
 Route::resource('/productsOut', ProductKeluarController::class);
 Route::get('/apiProductsOut', [ProductKeluarController::class, 'apiProductsOut'])->name('api.productsOut');

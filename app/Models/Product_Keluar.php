@@ -6,9 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product_Keluar extends Model
 {
-    protected $table = 'product_keluar';
+    protected $table = 'product_out';
 
-    protected $fillable = ['product_id','customer_id','qty','tanggal'];
+    protected $fillable = [
+        'product_id',
+        'customer_id',
+        'qty',
+        'date'
+    ];
 
     protected $hidden = ['created_at','updated_at'];
 
