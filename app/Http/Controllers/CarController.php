@@ -119,7 +119,7 @@ class CarController extends Controller
         return DataTables::of($car)->addIndexColumn()
             ->addColumn('action', function ($car) {
                 return
-                    '<a onclick="editForm(' . $car->id . ')" class="btn btn-primary btn-xs text-white"><i class="glyphicon glyphicon-edit"></i> Edit</> ' .
+                    '<a onclick="editForm(' . $car->id . ')" class="btn btn-primary btn-xs text-white mr-2"><i class="glyphicon glyphicon-edit"></i> Edit</> ' .
                     '<a onclick="deleteData(' . $car->id . ')" class="btn btn-danger btn-xs text-white"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
             })
             ->rawColumns(['action'])->make(true);

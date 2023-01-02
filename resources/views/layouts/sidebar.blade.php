@@ -43,7 +43,7 @@
              <li class="header"><i class="fa fa-circle-dot"></i> <span>Data Transaksi</span></li>
              <li class="{{ Request::is('productsIn') ? 'active' : null }}"><a href="{{ url('productsIn') }}"><i class="fa fa-plus"></i> <span>Product In</span></a></li>
              <li class="{{ Request::is('productsOut') ? 'active' : null }}"><a href="{{ url('productsOut') }}"><i class="fa fa-minus"></i> <span>Product Out</span></a></li>
-            <li class="{{ Request::is('sales') ? 'active' : null }}"><a href="{{ url('sales') }}"><i class="fa fa-truck"></i> <span>Delivery Order</span></a></li>
+            <li class="{{ Request::is('delivery') ? 'active' : null }}"><a href="{{ url('delivery') }}"><i class="fa fa-truck"></i> <span>Delivery Order</span></a></li>
 
 
 

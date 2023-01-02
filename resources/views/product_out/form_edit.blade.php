@@ -25,7 +25,7 @@
 @section('content')
     {{-- Modal Form Edit --}}
     <div class="box">
-        <form id="form-item" action="/productsIn/{{ $invoice->id }}/edit" method="POST" class="form-horizontal"
+        <form id="form-item" action="/productsOut/{{ $invoice->id }}/edit" method="POST" class="form-horizontal"
             data-toggle="validator" enctype="multipart/form-data">
             @csrf
 
@@ -58,11 +58,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Supplier</label>
-                        <select class="form-control select" id="supplier" name="supplier_id">
+                        <label>Customer</label>
+                        <select class="form-control select" id="customer" name="customer_id">
                             <option>--Choose Supplier--</option>
-                            @foreach ($suppliers as $s)
-                                <option value={{ $s->id }} {{ $s->id == $invoice->supplier_id ? 'selected' : '' }}>
+                            @foreach ($customer as $s)
+                                <option value={{ $s->id }} {{ $s->id == $invoice->customer_id ? 'selected' : '' }}>
                                     {{ $s->name }}</option>
                             @endforeach
                         </select>
@@ -132,7 +132,7 @@
             </div>
 
             <div class="modal-footer">
-                <a href="{{URL::to('productsIn')}}" type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</a>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
 

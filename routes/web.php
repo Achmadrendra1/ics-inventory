@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DeliveryOrderController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
@@ -33,7 +34,9 @@ Route::get('/ajax-select-product', [Select2search::class, 'selectProduct']);
 Route::get('/ajax-select-supplier', [Select2search::class, 'selectSupplier']);
 Route::get('/ajax-select-customer', [Select2search::class, 'selectCustomer']);
 Route::get('/ajax-select-category', [Select2search::class, 'selectCategory']);
-Route::get('/test', [ProductMasukController::class, 'dataTablesTest'] );
+Route::get('/ajax-select-driver', [Select2search::class, 'selectDriver']);
+Route::get('/ajax-select-car', [Select2search::class, 'selectCar']);
+// Route::get('/test', [ProductMasukController::class, 'dataTablesTest'] );
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -72,9 +75,16 @@ Route::resource('/cars', CarController::class);
 Route::get('/apiCar', [CarController::class, 'apiCar'])->name('api.car');
 
 Route::resource('/drivers', DriverController::class);
+Route::post('/drivers/{id}/edit', [DriverController::class, 'update']);
 Route::get('/apiDriver', [DriverController::class, 'apiDriver'])->name('api.driver');
 
+Route::resource('/delivery', DeliveryOrderController::class);
+Route::post('/delivery/{id}/edit', [DeliveryOrderController::class, 'update']);
+Route::get('/apiDelivery', [DeliveryOrderController::class, 'apiDelivery'])->name('api.delivery');
+
 Route::resource('/productsOut', ProductKeluarController::class);
+Route::post('/productsOut/{id}/edit', [ProductKeluarController::class, 'update']);
+Route::get('/productsOut/{id}/print', [ProductKeluarController::class, 'print']);
 Route::get('/apiProductsOut', [ProductKeluarController::class, 'apiProductsOut'])->name('api.productsOut');
 Route::get('/exportProductKeluarAll', [ProductKeluarController::class, 'exportProductKeluarAll'])->name('exportPDF.productKeluarAll');
 Route::get('/exportProductKeluarAllExcel', [ProductKeluarController::class, 'exportExcel'])->name('exportExcel.productKeluarAll');

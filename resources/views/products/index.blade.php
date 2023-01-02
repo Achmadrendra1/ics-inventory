@@ -70,7 +70,13 @@
             serverSide: true,
             ajax: "{{ url('/apiProducts') }}",
             columns: [
-                {data: 'id',name: 'id'},
+                // {
+                //     data: 'DT_RowIndex',
+                //     name: 'DT_RowIndex',
+                //     orderable: false,
+                //     searchable: false
+                // },
+                {data: 'id', name: 'id'},
                 {data: 'name', name: 'nama'},
                 {data: 'price', name: 'harga'},
                 {data: 'qty', name: 'qty'},

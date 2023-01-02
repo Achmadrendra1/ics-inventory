@@ -15,7 +15,7 @@
         </div>
 
         <div class="box-header">
-            <a onclick="addForm()" class="btn btn-primary text-white">Add Car</a>
+            <a onclick="addForm()" class="btn btn-primary text-white">Add Cars</a>
             <a href="{{ route('exportPDF.categoriesAll') }}" class="btn btn-danger">Export PDF</a>
             <a href="{{ route('exportExcel.categoriesAll') }}" class="btn btn-success">Export Excel</a>
         </div>
@@ -26,7 +26,7 @@
             <table id="car-table" class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>No.</th>
                         <th>Brand</th>
                         <th>License Plate</th>
                         <th></th>
@@ -69,7 +69,8 @@
             processing: true,
             serverSide: true,
             ajax: "{{ route('api.car') }}",
-            columns: [{
+            columns: [
+                {
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     orderable: false,
@@ -81,7 +82,7 @@
                 },
                 {
                     data: 'license_plate',
-                    name: 'plate'
+                    name: 'license_plate'
                 },
                 {
                     data: 'action',
@@ -110,7 +111,7 @@
                 dataType: "JSON",
                 success: function(data) {
                     $('#modal-form').modal('show');
-                    $('.modal-title').text('Edit Car');
+                    $('.modal-title').text('Edit Cars');
 
                     $('#id').val(data.id);
                     $('#brand').val(data.brand);

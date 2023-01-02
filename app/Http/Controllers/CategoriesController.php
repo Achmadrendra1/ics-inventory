@@ -120,7 +120,7 @@ class CategoriesController extends Controller
         return DataTables::of($categories)->addIndexColumn()
             ->addColumn('action', function ($categories) {
                 return
-                '<a onclick="editForm(' . $categories->id . ')" class="btn btn-primary btn-xs text-white"><i class="glyphicon glyphicon-edit"></i> Edit </> '.
+                '<a onclick="editForm(' . $categories->id . ')" class="btn btn-primary btn-xs text-white mr-2"><i class="glyphicon glyphicon-edit"></i> Edit </> '.
                 '<a onclick="deleteData(' . $categories->id . ')" class="btn btn-danger btn-xs text-white"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
             })
             ->rawColumns(['action'])->make(true);

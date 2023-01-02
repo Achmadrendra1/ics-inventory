@@ -12,6 +12,7 @@ use App\Models\Supplier;
 use PDF;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
@@ -29,14 +30,14 @@ class ProductMasukController extends Controller
      */
     public function index()
     {
-        $products = Product::orderBy('nama', 'ASC')
+        $products = Product::orderBy('name', 'ASC')
             ->get()
-            ->pluck('nama', 'id');
+            ->pluck('name', 'id');
 
-        $product = Product::orderBy('nama', 'ASC')
+        $product = Product::orderBy('name', 'ASC')
             ->get();
 
-        $suppliers = Supplier::orderBy('nama', 'ASC')
+        $suppliers = Supplier::orderBy('name', 'ASC')
             ->get();
 
         $invoice_data = Product_Masuk::all();
@@ -62,13 +63,14 @@ class ProductMasukController extends Controller
     public function store(Request $request)
     {
         $invoice = new invoice();
-        $invoice->no_invoice = $request->invoice;
-        $invoice->tanggal_invoice = $request->tanggal;
+        $invoice->no_invoice = 'ICS/I/'.$request->invoice;
+        $invoice->date = $request->tanggal;
         $invoice->supplier_id = $request->supplier_id;
-        $invoice->status = "IN";
+        $invoice->type = "IN";
+        $invoice->user_id = auth::user()->id;
         $invoice->save();
 
-        $getNoinv = invoice::where('no_invoice', $request->invoice)->first();
+        $getNoinv = invoice::where('no_invoice', 'ICS/I/'.$request->invoice)->first();
 
         $product = $request->product_id;
         $exp = $request->expDate;
@@ -112,13 +114,13 @@ class ProductMasukController extends Controller
      */
     public function edit($id)
     {
-        $products = Product::orderBy('nama', 'ASC')
+        $products = Product::orderBy('name', 'ASC')
             ->get()
-            ->pluck('nama', 'id');
-        $product = Product::orderBy('nama', 'ASC')
+            ->pluck('name', 'id');
+        $product = Product::orderBy('name', 'ASC')
             ->get();
 
-        $suppliers = Supplier::orderBy('nama', 'ASC')
+        $suppliers = Supplier::orderBy('name', 'ASC')
             ->get();
         $invoice = invoice::find($id);
         $detail = invoice_detail::where('no_invoice', $invoice->no_invoice)->get();
@@ -142,12 +144,12 @@ class ProductMasukController extends Controller
     public function update(Request $request, $id)
     {
         $invoice = invoice::findOrFail($id);
-        $invoice->no_invoice = $request->invoice;
+        $invoice->no_invoice = 'ICS/I/'.$request->invoice;
         $invoice->tanggal_invoice = $request->tanggal;
         $invoice->supplier_id = $request->supplier_id;
         $invoice->update();
 
-        $getNoinv = invoice::where('no_invoice', $request->invoice)->first();
+        $getNoinv = invoice::where('no_invoice', 'ICS/I/'.$request->invoice)->first();
 
         $product = $request->product;
         $exp = $request->expDate;
@@ -210,15 +212,13 @@ class ProductMasukController extends Controller
         ]);
     }
 
-    public function dataTablesTest()
+    public function apiProductsIn()
     {
-        $invoice = invoice::all();
+        $invoice = invoice::where('type', 'In');
 
-
-        // return \dd($invoice->supplier->nama);
         return Datatables::of($invoice)
             ->addColumn('supplier_name', function ($invoice) {
-                return $invoice->supplier->nama;
+                return $invoice->supplier->name;
             })
             ->addColumn('jumlah_product', function ($invoice) {
                 $product = invoice_detail::where('no_invoice', $invoice->no_invoice)->get();
@@ -232,27 +232,6 @@ class ProductMasukController extends Controller
                     '<a onclick="deleteData(' . $invoice->id . ')" class="btn btn-danger btn-xs text-white"><i class="glyphicon glyphicon-trash"></i> Delete</a> ';
             })
             ->rawColumns(['supplier_name', 'jumlah_product', 'action'])->make(true);
-    }
-
-
-
-    public function apiProductsIn()
-    {
-        $product = Product_Masuk::all();
-
-        return Datatables::of($product)
-            ->addColumn('products_name', function ($product) {
-                return $product->product->nama;
-            })
-            ->addColumn('supplier_name', function ($product) {
-                return $product->supplier->nama;
-            })
-            ->addColumn('action', function ($product) {
-                return
-                    '<a href="{{ url("productsIn") }}" + "/" ' . $product->id . ' "/edit" class="btn btn-primary btn-xs text-white"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
-                    '<a onclick="deleteData(' . $product->id . ')" class="btn btn-danger btn-xs text-white"><i class="glyphicon glyphicon-trash"></i> Delete</a> ';
-            })
-            ->rawColumns(['products_name', 'supplier_name', 'action'])->make(true);
     }
 
     public function exportProductMasukAll()

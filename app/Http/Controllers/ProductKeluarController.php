@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Exports\ExportProdukKeluar;
+use App\Models\invoice;
+use App\Models\invoice_detail;
 use App\Models\Product;
 use App\Models\Product_Keluar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 use PDF;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class ProductKeluarController extends Controller
@@ -25,16 +29,16 @@ class ProductKeluarController extends Controller
      */
     public function index()
     {
-        $products = Product::orderBy('nama','ASC')
+        $products = Product::orderBy('name','ASC')
             ->get()
-            ->pluck('nama','id');
+            ->pluck('name','id');
 
-        $customers = Customer::orderBy('nama','ASC')
+        $customers = Customer::orderBy('name','ASC')
             ->get()
-            ->pluck('nama','id');
+            ->pluck('name','id');
 
         $invoice_data = Product_Keluar::all();
-        return view('product_keluar.index', compact('products','customers', 'invoice_data'));
+        return view('product_out.index', compact('products','customers', 'invoice_data'));
     }
 
     /**
@@ -55,23 +59,44 @@ class ProductKeluarController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-           'product_id'     => 'required',
-           'customer_id'    => 'required',
-           'qty'            => 'required',
-           'tanggal'           => 'required'
-        ]);
+        $invoice = new invoice();
+        $invoice->no_invoice = 'ICS/O/'. $request->invoice;
+        $invoice->date = $request->tanggal;
+        $invoice->customer_id = $request->customer_id;
+        $invoice->type = "OUT";
+        $invoice->user_id = Auth::user()->id;
+        $invoice->save();
 
-        Product_Keluar::create($request->all());
+        $getNoinv = invoice::where('no_invoice', 'ICS/O/'.$request->invoice)->first();
 
-        $product = Product::findOrFail($request->product_id);
-        $product->qty -= $request->qty;
-        $product->save();
+        $product = $request->product_id;
+        $exp = $request->expDate;
+        $batch = $request->batch;
+        $qty = $request->qty;
 
-        return response()->json([
-            'success'    => true,
-            'message'    => 'Products Out Created'
-        ]);
+        for ($i = 0; $i < count($product); $i++) {
+            $stok = Product::find($product[$i]);
+            if($stok->qty > $qty[$i]){
+                $stok->qty -= $qty[$i];
+                $stok->update();
+
+                $detail = new invoice_detail();
+                $detail->no_invoice = $getNoinv->no_invoice;
+                $detail->product_id = $product[$i];
+                $detail->exp_date = $exp[$i];
+                $detail->batch_no = $batch[$i];
+                $detail->qty = $qty[$i];
+                $detail->save();
+            } else {
+                invoice::where('no_invoice', $getNoinv->no_invoice)->delete();
+                Alert::error('Ooppss', 'Products Out Of Stock !');
+                return \redirect('productsOut');
+            }
+            
+        }
+
+        Alert::success('Success', 'Products Out Saved');
+        return \redirect('productsOut');
 
     }
 
@@ -94,8 +119,23 @@ class ProductKeluarController extends Controller
      */
     public function edit($id)
     {
-        $product_keluar = Product_Keluar::find($id);
-        return $product_keluar;
+        $products = Product::orderBy('name', 'ASC')
+            ->get()
+            ->pluck('name', 'id');
+        $product = Product::orderBy('name', 'ASC')
+            ->get();
+
+        $customers = Customer::orderBy('name', 'ASC')
+            ->get();
+        $invoice = invoice::find($id);
+        $detail = invoice_detail::where('no_invoice', $invoice->no_invoice)->get();
+        return \view('product_out.form_edit', [
+            'product' => $product,
+            'products' => $products,
+            'customer' => $customers,
+            'invoice' => $invoice,
+            'detail' => $detail
+        ]);
     }
 
     /**
@@ -107,24 +147,57 @@ class ProductKeluarController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'product_id'     => 'required',
-            'customer_id'    => 'required',
-            'qty'            => 'required',
-            'tanggal'           => 'required'
-        ]);
+        $invoice = invoice::findOrFail($id);
+        $invoice->no_invoice = $request->invoice;
+        $invoice->date = $request->tanggal;
+        $invoice->customer_id = $request->customer_id;
+        $invoice->update();
 
-        $product_keluar = Product_Keluar::findOrFail($id);
-        $product_keluar->update($request->all());
+        $getNoinv = invoice::where('no_invoice', $request->invoice)->first();
 
-        $product = Product::findOrFail($request->product_id);
-        $product->qty -= $request->qty;
-        $product->update();
+        $product = $request->product;
+        $exp = $request->expDate;
+        $batch = $request->batch;
+        $qty = $request->qty;
 
-        return response()->json([
-            'success'    => true,
-            'message'    => 'Product Out Updated'
-        ]);
+        for ($i = 0; $i < count($product); $i++) {
+            $cekQty = invoice_detail::where('no_invoice', $request->invoice)->where('product_id', $product[$i])->first();
+            if ($cekQty->qty > $qty[$i]){
+                if (empty($cekQty->qty)) {
+                    $stok = Product::find($product[$i]);
+                    $stok->qty -= $qty[$i];
+                    $stok->update();
+    
+                    $detail = new invoice_detail();
+                    $detail->no_invoice = $getNoinv->no_invoice;
+                    $detail->product_id = $product[$i];
+                    $detail->exp_date = $exp[$i];
+                    $detail->batch_no = $batch[$i];
+                    $detail->qty = $qty[$i];
+                    $detail->save();
+                }
+                if ($cekQty->qty != $qty[$i]) {
+                    $stok = Product::find($product[$i]);
+                    $stok->qty = $stok->qty - $cekQty->qty - $qty[$i];
+                    $stok->update();
+    
+                    invoice_detail::where('no_invoice', $request->invoice)->where('product_id', $product[$i])->update([
+                        'no_invoice' => $getNoinv->no_invoice,
+                        'product_id' => $product[$i],
+                        'exp_date' => $exp[$i],
+                        'batch_no' => $batch[$i],
+                        'qty' => $qty[$i]
+                    ]);
+                }
+            } else {
+                Alert::error('Oopps !!!', 'Products Out Of Stock');
+                return \redirect('productsOut');
+            }
+           
+        }
+
+        Alert::success('Success', 'Products Out Updated');
+        return \redirect('productsOut');
     }
 
     /**
@@ -146,21 +219,24 @@ class ProductKeluarController extends Controller
 
 
     public function apiProductsOut(){
-        $product = Product_Keluar::all();
+        $invoice = invoice::where('type', 'Out');
 
-        return Datatables::of($product)
-            ->addColumn('products_name', function ($product){
-                return $product->product->nama;
+        return Datatables::of($invoice)
+            ->addColumn('customer_name', function ($invoice) {
+                return $invoice->customer->name;
             })
-            ->addColumn('customer_name', function ($product){
-                return $product->customer->nama;
+            ->addColumn('jumlah_product', function ($invoice) {
+                $product = invoice_detail::where('no_invoice', $invoice->no_invoice)->get();
+                $jumlah = count($product);
+                return $jumlah;
             })
-            ->addColumn('action', function($product){
-                return 
-                    '<a onclick="editForm('. $product->id .')" class="btn btn-primary btn-xs text-white"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
-                    '<a onclick="deleteData('. $product->id .')" class="btn btn-danger btn-xs text-white"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
+            ->addColumn('action', function ($invoice) {
+                return
+                    '<a href="productsOut/' . $invoice->id . '/print" class="btn btn-success btn-xs text-white"><i class="glyphicon glyphicon-edit"></i> Print</a> ' .
+                    '<a href="productsOut/' . $invoice->id . '/edit" class="btn btn-primary btn-xs text-white"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
+                    '<a onclick="deleteData(' . $invoice->id . ')" class="btn btn-danger btn-xs text-white"><i class="glyphicon glyphicon-trash"></i> Delete</a> ';
             })
-            ->rawColumns(['products_name','customer_name','action'])->make(true);
+            ->rawColumns(['customer_name', 'jumlah_product', 'action'])->make(true);
 
     }
 

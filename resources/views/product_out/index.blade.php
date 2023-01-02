@@ -27,13 +27,13 @@
     <div class="box">
 
         <div class="box-header">
-            <h3 class="box-title">Data Products In</h3>
+            <h3 class="box-title">Data Products Out</h3>
 
 
         </div>
 
         <div class="box-header">
-            <a onclick="addForm()" class="btn btn-primary text-white">Add Products In</a>
+            <a onclick="addForm()" class="btn btn-primary text-white">Add Products Out</a>
             <a href="{{ route('exportPDF.productMasukAll') }}" class="btn btn-danger">Export PDF</a>
             <a href="{{ route('exportExcel.productMasukAll') }}" class="btn btn-success">Export Excel</a>
         </div>
@@ -47,7 +47,7 @@
                 <thead>
                     <tr>
                         <th>No Invoice</th>
-                        <th>Supplier</th>
+                        <th>Customer</th>
                         <th>Jumlah Product</th>
                         <th>Tanggal Masuk</th>
                         <th></th>
@@ -60,7 +60,7 @@
     </div>
 
 
-    @include('product_masuk.form')
+    @include('product_out.form')
 @endsection
 
 @section('bot')
@@ -141,7 +141,7 @@
         var table = $('#products-in-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "/apiProductsIn",
+            ajax: "/apiProductsOut",
             columns: [
                 // {
                 //     data: 'id',
@@ -152,8 +152,8 @@
                     name: 'no_invoice'
                 },
                 {
-                    data: 'supplier_name',
-                    name: 'supplier_name'
+                    data: 'customer_name',
+                    name: 'customer_name'
                 },
                 {
                     data: 'jumlah_product',
@@ -177,7 +177,7 @@
             $('input[name=_method]').val('POST');
             $('#modal-form').modal('show');
             $('#modal-form form')[0].reset();
-            $('.modal-title').text('Add Products In');
+            $('.modal-title').text('Add Products Out');
         }
 
         // function editForm(id) {
@@ -302,13 +302,13 @@
 
 
 
-        $('#supplier').select2({
-            placeholder: '--Select Supplier--',
+        $('#customer').select2({
+            placeholder: '--Select Customer--',
             dropdownParent: $('#modal-form form'),
             theme: "bootstrap",
 
             ajax: {
-                url: '/ajax-select-supplier',
+                url: '/ajax-select-customer',
                 dataType: 'json',
                 delay: 250,
                 processResults: function(data) {

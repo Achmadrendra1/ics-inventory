@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\car;
 use App\Models\Categories;
 use App\Models\Customer;
+use App\Models\Driver;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -68,5 +70,35 @@ class Select2search extends Controller
             $category = Categories::all();
         }
         return response()->json($category);
+    }
+
+    public function selectDriver(Request $request)
+    {
+        $driver = [];
+
+        if ($request->has('q')) {
+            $search = $request->q;
+            $driver = Driver::select("id", "name")
+            ->where('name', 'LIKE', "%$search%")
+            ->get();
+        } else {
+            $driver = Driver::all();
+        }
+        return response()->json($driver);
+    }
+  
+    public function selectCar(Request $request)
+    {
+        $car = [];
+
+        if ($request->has('q')) {
+            $search = $request->q;
+            $car = car::select("id", "brand", "plate")
+            ->where('brand', 'plate', 'LIKE', "%$search%")
+            ->get();
+        } else {
+            $car = car::all();
+        }
+        return response()->json($car);
     }
 }

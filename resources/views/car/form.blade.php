@@ -1,7 +1,8 @@
 <div class="modal fade" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <form  id="form-item" method="post" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data" >
+            <form id="form-item" method="post" action="{{ url('/cars') }}" class="form-horizontal"
+                data-toggle="validator" enctype="multipart/form-data">
                 {{ csrf_field() }} {{ method_field('POST') }}
 
                 <div class="modal-header">
@@ -15,18 +16,21 @@
                     <input type="hidden" id="id" name="id">
 
 
-                    <div class="box-body">
+                    <div class="box-body flex">
+
                         <div class="form-group">
-                            <label >Brand</label>
-                            <input type="text" class="form-control" id="brand" name="brand"  autofocus required>
+                            <label>Brand</label>
+                            <input type="text" class="form-control" id="brand" name="brand" required>
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <div class="form-group">
-                            <label >License Plate</label>
-                            <input type="text" class="form-control" id="plate" name="license_plate"  autofocus required>
+                            <label>License Plate</label>
+                            <input data-date-format='yyyy-mm-dd' type="text" class="form-control" id="plate"
+                                name="license_plate" required>
                             <span class="help-block with-errors"></span>
                         </div>
+
                     </div>
                     <!-- /.box-body -->
 
@@ -38,9 +42,14 @@
                 </div>
 
             </form>
+           
         </div>
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+
+
+

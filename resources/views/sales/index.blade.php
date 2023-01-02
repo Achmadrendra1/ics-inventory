@@ -74,7 +74,12 @@
             serverSide: true,
             ajax: "{{ route('api.sales') }}",
             columns: [
-                {data: 'id', name: 'id'},
+                {
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
                 {data: 'nama', name: 'nama'},
                 {data: 'alamat', name: 'alamat'},
                 {data: 'email', name: 'email'},

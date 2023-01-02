@@ -32,7 +32,7 @@
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
           page. However, you can choose any other skin. Make sure you
           apply the skin class to the body tag so the changes take effect. -->
-    <link rel="stylesheet" href={{ Auth::user()->role == "Staff" ? "assets/dist/css/skins/skin-green.min.css" : "assets/dist/css/skins/skin-blue.min.css" }}
+    <link rel="stylesheet" href={{ Auth::user()->role == "Staff" ? URL::to("assets/dist/css/skins/skin-green.min.css") : URL::to("assets/dist/css/skins/skin-blue.min.css") }}
     @yield('top')
 
     <link rel="stylesheet"

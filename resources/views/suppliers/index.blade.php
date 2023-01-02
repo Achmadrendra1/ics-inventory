@@ -76,6 +76,12 @@
             serverSide: true,
             ajax: "{{ route('api.suppliers') }}",
             columns: [
+                // {
+                //     data: 'DT_RowIndex',
+                //     name: 'DT_RowIndex',
+                //     orderable: false,
+                //     searchable: false
+                // },
                 {data: 'id', name: 'id'},
                 {data: 'name', name: 'nama'},
                 {data: 'address', name: 'alamat'},

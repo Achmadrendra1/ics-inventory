@@ -72,7 +72,8 @@
             processing: true,
             serverSide: true,
             ajax: "{{ url('apiUser') }}",
-            columns: [{
+            columns: [
+                {
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     orderable: false,

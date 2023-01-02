@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class delivery extends Model
 {
     use HasFactory;
+    protected $table = 'delivery_order';
     protected $fillable = [
         'no_delivery_order',
         'no_invoice',
@@ -17,4 +18,24 @@ class delivery extends Model
     ];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function driver()
+    {
+        return $this->belongsTo(driver::class);
+    }
+
+    public function car()
+    {
+        return $this->belongsTo(car::class);
+    }
 }
